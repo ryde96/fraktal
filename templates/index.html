@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+{% endblock %}
+{% block content %}
+    <h1>Fraktal Kraft AS</h1>
+    <span hidden="hidden" id="json"> {{ data }}</span>
+
+    <p class="important">
+      Welcome to my awesome homepage.
+    </p>
+    <canvas id='myChart'></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var value = document.getElementById("json").innerHTML;
+    var data = JSON.parse(value);
+    var fill = [];
+    var capacity = [];
+    var twh_fill = [];
+    for (i = 0; i < data.length; i++) {
+        fill[i] = data[i].fyllingsgrad;
+        capacity[i] = data[i].kapasitet_TWh;
+        twh_fill[i] = data[i].fylling_TWh;
+    }
+    console.log(fill);
+    var month_series = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    console.log(data);
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: month_series,
+      datasets: [{
+        label: 'fyllingsgrad',
+        data: fill,
+        borderWidth: 1
+      },
+      {
+        label: 'Kapasitet TWh',
+        data: capacity,
+        borderWidth: 1
+      },
+      {
+        label: 'Fyllingsgrad TWh',
+        data: twh_fill,
+        borderWidth: 1
+      },
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}
+
