@@ -43,6 +43,10 @@ def main():
     result.to_json("out.json", index=False)
 
     # TODO: Fix this
+    fig1, (ax1, ax2) = plt.subplots(nrows=2, ncols=1)
+    ax1.plot(result['fyllingsgrad'])
+    ax2.plot(result['precipitation'])
+    fig1.savefig("test.png")
 
     plt.plot(t['fyllingsgrad'])
     plt.ylabel("Fyllingsgrad")
@@ -55,9 +59,11 @@ def main():
     #plt.show()
     plt.savefig('fyllingsgrad_twh.png')
     plt.cla()
-    plt.plot(result['value'])
+    plt.plot(result['precipitation'])
     plt.ylabel("Nedbør MM")
     plt.xlabel("Måned")
     plt.savefig('precipitation.png')
+
+
 if __name__ == "__main__":
     main()

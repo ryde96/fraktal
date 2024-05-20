@@ -29,7 +29,7 @@ def clean_transform_mag_data(dataframe, omr_type=''):
     print(omr_type)
     dataframe.dropna()
     df = dataframe[dataframe['iso_aar'] == 2022]
-    df = df[df['omrnr'] == 1]
+    #df = df[df['omrnr'] == 1]
     df = df.sort_values(by=['iso_uke'])
     if omr_type != '':
         df = df[df['omrType'] == omr_type]
