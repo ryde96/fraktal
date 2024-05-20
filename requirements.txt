@@ -4,3 +4,5 @@ matplotlib
 flask
 flask-API
 httpx
+Flask-RESTful
+ydata-profiling

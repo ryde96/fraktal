@@ -8,30 +8,39 @@
 {% endblock %}
 {% block content %}
     <h1>Fraktal Kraft AS</h1>
-    <span hidden="hidden" id="json"> {{ data }}</span>
+    <span hidden="hidden" id="all_data">{{ data }}</span>
+    <span hidden="hidden" id="nve_data"> {{ nve }} </span>
+    <span hidden="hidden" id="frost_data"> {{ frost }} </span>
 
     <p class="important">
       Welcome to my awesome homepage.
     </p>
     <canvas id='myChart'></canvas>
+    <canvas id='myChart2'></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var value = document.getElementById("json").innerHTML;
-    var data = JSON.parse(value);
+    var all_value = document.getElementById("all_data").innerHTML;
+    var all_data = JSON.parse(all_value);
     var fill = [];
     var capacity = [];
     var twh_fill = [];
-    for (i = 0; i < data.length; i++) {
-        fill[i] = data[i].fyllingsgrad;
-        capacity[i] = data[i].kapasitet_TWh;
-        twh_fill[i] = data[i].fylling_TWh;
+    var precipitation = [];
+    var months = [];
+    for (i = 0; i < all_data.length; i++) {
+        fill[i] = all_data[i].fyllingsgrad;
+        capacity[i] = all_data[i].kapasitet_TWh;
+        twh_fill[i] = all_data[i].fylling_TWh;
+        precipitation[i] = all_data[i].precipitation;
+        months[i] = all_data[i].month;
     }
     console.log(fill);
     var month_series = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    console.log(data);
-    const ctx = document.getElementById('myChart');
-    new Chart(ctx, {
+    console.log(all_data);
+    const ctx2 = document.getElementById('myChart2');
+
+    new Chart(ctx2, {
     type: 'line',
+
     data: {
       labels: month_series,
       datasets: [{
@@ -39,6 +48,7 @@
         data: fill,
         borderWidth: 1
       },
+      /*
       {
         label: 'Kapasitet TWh',
         data: capacity,
@@ -48,7 +58,38 @@
         label: 'Fyllingsgrad TWh',
         data: twh_fill,
         borderWidth: 1
+      },*/
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+    new Chart(ctx, {
+    type: 'bar',
+
+    data: {
+      labels: month_series,
+      datasets: [{
+        label: 'Nedbør',
+        data: precipitation,
+        borderWidth: 1
       },
+      /*
+      {
+        label: 'Kapasitet TWh',
+        data: capacity,
+        borderWidth: 1
+      },
+      {
+        label: 'Fyllingsgrad TWh',
+        data: twh_fill,
+        borderWidth: 1
+      },*/
       ]
     },
     options: {

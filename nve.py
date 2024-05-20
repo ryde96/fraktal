@@ -26,6 +26,7 @@ def get_magazine_data(endpoint):
 
 
 def clean_transform_mag_data(dataframe, omr_type=''):
+    print(omr_type)
     dataframe.dropna()
     df = dataframe[dataframe['iso_aar'] == 2022]
     df = df[df['omrnr'] == 1]
@@ -34,23 +35,30 @@ def clean_transform_mag_data(dataframe, omr_type=''):
         df = df[df['omrType'] == omr_type]
 
     print(df.dtypes)
-    df['dato_Id'] = pd.to_datetime(df['dato_Id'])
+    df[['year', 'month', 'day']] = df['dato_Id'].str.split('-', expand=True)
+    df = df[df['year'] == "2022"]
+    print("@@@@@")
     print(df)
-    print(df['dato_Id'])
     print("-------")
-    df = df.groupby(
-        pd.PeriodIndex(df['dato_Id'], freq="M"))[
+    df = df.set_index('month')
+    print(df)
+
+    df = df.groupby('month')[
         ['fyllingsgrad',
          'kapasitet_TWh',
          'fylling_TWh',
          'endring_fyllingsgrad',
          ]
     ].mean()
+
+    #df.groupby(['month']).mean()
+    #grouped = df.groupby(["month"]).mean()
+    print("######")
     print(df)
+    #print(grouped)
+    print('###')
     seq = list(range(1, len(df)))
     print(seq)
-    #df['id'] = seq
-    #df = df.set_index('id')
     print("-------")
     print(df)
     return df
